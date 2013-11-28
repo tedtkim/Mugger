@@ -7,15 +7,105 @@
 //
 
 #import "MuggerAppDelegate.h"
+#import "MuggerAppDelegate+MOC.h"
+#import "MuggerDatabaseNames.h"
+
+@interface MuggerAppDelegate()
+@property (strong, nonatomic) NSManagedObjectContext *muggerDatabaseContext;
+@property (strong, nonatomic) UIManagedDocument *document;
+@end
 
 @implementation MuggerAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [self prepareContext];
     return YES;
 }
-							
+
+#pragma mark - NSManagedDocument & database context
+
+// the getter for the UIManagedDocument *document @property - single instance throughout app
+- (UIManagedDocument *)document
+{
+    if (!_document) {
+        static dispatch_once_t onceToken; // only gets executed once per application launch
+        dispatch_once(&onceToken, ^{
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSURL *documentsDirectory = [[fileManager URLsForDirectory:NSDocumentDirectory
+                                                             inDomains:NSUserDomainMask] firstObject];
+            NSURL *url = [documentsDirectory URLByAppendingPathComponent:MuggerDatabaseNamesDocument];
+            _document = [[UIManagedDocument alloc] initWithFileURL:url];
+        });
+    }
+    return _document;
+}
+
+- (void)prepareContext
+{
+    if (self.document) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[self.document.fileURL path]]) {
+            [self.document openWithCompletionHandler:^(BOOL success) {
+                if (success && self.document.documentState == UIDocumentStateNormal) {
+                    self.muggerDatabaseContext = self.document.managedObjectContext;
+                } else {
+                    NSLog(@"couldn't open document at %@", self.document.fileURL);
+                }
+            }];
+        } else {
+            [self.document saveToURL:self.document.fileURL
+                    forSaveOperation:UIDocumentSaveForCreating
+                   completionHandler:^(BOOL success) {
+                       if (success && self.document.documentState == UIDocumentStateNormal) {
+                           self.muggerDatabaseContext = self.document.managedObjectContext;
+                       } else {
+                           NSLog(@"couldn't create document at %@", self.document.fileURL);
+                       }
+                   }];
+        }
+    }
+}
+
+// When database context becomes available, we post a notification to let
+// others know the context is available
+- (void)setMuggerDatabaseContext:(NSManagedObjectContext *)muggerDatabaseContext
+{
+    _muggerDatabaseContext = muggerDatabaseContext;
+    
+    /* TODO: Instead of this, use corresponding User model
+     // make sure "the user" Photographer exists at all times
+     if (muggerDatabaseContext) [Photographer userInManagedObjectContext:photoDatabaseContext];
+     */
+    
+    /* TODO: Legacy code
+     // every time the context changes, we'll restart our timer
+     // so kill (invalidate) the current one
+     // (we didn't get to this line of code in lecture, sorry!)
+     [self.flickrForegroundFetchTimer invalidate];
+     self.flickrForegroundFetchTimer = nil;
+     
+     if (self.muggerDatabaseContext)
+     {
+     // this timer will fire only when we are in the foreground
+     self.flickrForegroundFetchTimer = [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
+     target:self
+     selector:@selector(startFlickrFetch:)
+     userInfo:nil
+     repeats:YES];
+     }
+     */
+    
+    // let everyone who might be interested know this context is available
+    NSDictionary *userInfo = self.muggerDatabaseContext ? @{ MuggerDatabaseNamesContext : self.muggerDatabaseContext } : nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:MuggerDatabaseNamesNotification
+                                                        object:self
+                                                      userInfo:userInfo];
+}
+
+
+// Below are default app delegates to be used as needed
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

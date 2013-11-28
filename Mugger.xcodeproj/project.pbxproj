@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0280741218455C92006873DD /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0280740E18455C92006873DD /* CoreDataTableViewController.m */; };
+		0280741D18457686006873DD /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0280741B18457686006873DD /* Model.xcdatamodeld */; };
+		02C5CFFC1845CFB400EB1366 /* AddPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */; };
+		02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */; };
+		02C5D0141846FF3700EB1366 /* User+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D0131846FF3700EB1366 /* User+Create.m */; };
+		02C5D01718471AEA00EB1366 /* MugsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01618471AEA00EB1366 /* MugsCDTVC.m */; };
+		02C5D01A18471CAE00EB1366 /* Photo+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01918471CAE00EB1366 /* Photo+Create.m */; };
+		02C5D01D1847297C00EB1366 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01C1847297C00EB1366 /* Photo.m */; };
+		02C5D0201847297D00EB1366 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01F1847297D00EB1366 /* User.m */; };
 		02D72D8A1845540E004A8BB3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D891845540E004A8BB3 /* Foundation.framework */; };
 		02D72D8C1845540E004A8BB3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D8B1845540E004A8BB3 /* CoreGraphics.framework */; };
 		02D72D8E1845540E004A8BB3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D8D1845540E004A8BB3 /* UIKit.framework */; };
@@ -35,6 +44,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0280740D18455C92006873DD /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataTableViewController.h; path = CoreDataTableViewController/CoreDataTableViewController.h; sourceTree = "<group>"; };
+		0280740E18455C92006873DD /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataTableViewController.m; path = CoreDataTableViewController/CoreDataTableViewController.m; sourceTree = "<group>"; };
+		0280741A18455F9B006873DD /* MuggerDatabaseNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MuggerDatabaseNames.h; path = ../MuggerDatabaseNames.h; sourceTree = "<group>"; };
+		0280741C18457686006873DD /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		02C5CFFA1845CFB400EB1366 /* AddPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPhotoViewController.h; sourceTree = "<group>"; };
+		02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPhotoViewController.m; sourceTree = "<group>"; };
+		02C5CFFD1845D58500EB1366 /* UsersCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCDTVC.h; sourceTree = "<group>"; };
+		02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCDTVC.m; sourceTree = "<group>"; };
+		02C5D0121846FF3700EB1366 /* User+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Create.h"; sourceTree = "<group>"; };
+		02C5D0131846FF3700EB1366 /* User+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+Create.m"; sourceTree = "<group>"; };
+		02C5D01518471AEA00EB1366 /* MugsCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MugsCDTVC.h; sourceTree = "<group>"; };
+		02C5D01618471AEA00EB1366 /* MugsCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MugsCDTVC.m; sourceTree = "<group>"; };
+		02C5D01818471CAE00EB1366 /* Photo+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Create.h"; sourceTree = "<group>"; };
+		02C5D01918471CAE00EB1366 /* Photo+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Create.m"; sourceTree = "<group>"; };
+		02C5D01B1847297C00EB1366 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		02C5D01C1847297C00EB1366 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		02C5D01E1847297D00EB1366 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		02C5D01F1847297D00EB1366 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		02D72D861845540E004A8BB3 /* Mugger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mugger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D72D891845540E004A8BB3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		02D72D8B1845540E004A8BB3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -43,8 +70,8 @@
 		02D72D931845540E004A8BB3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		02D72D951845540E004A8BB3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		02D72D971845540E004A8BB3 /* Mugger-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mugger-Prefix.pch"; sourceTree = "<group>"; };
-		02D72D981845540E004A8BB3 /* MuggerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MuggerAppDelegate.h; sourceTree = "<group>"; };
-		02D72D991845540E004A8BB3 /* MuggerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MuggerAppDelegate.m; sourceTree = "<group>"; };
+		02D72D981845540E004A8BB3 /* MuggerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MuggerAppDelegate.h; path = ../MuggerAppDelegate.h; sourceTree = "<group>"; };
+		02D72D991845540E004A8BB3 /* MuggerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MuggerAppDelegate.m; path = ../MuggerAppDelegate.m; sourceTree = "<group>"; };
 		02D72D9C1845540E004A8BB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		02D72D9F1845540E004A8BB3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		02D72DA11845540E004A8BB3 /* MuggerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MuggerViewController.h; sourceTree = "<group>"; };
@@ -81,6 +108,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0280741718455E4D006873DD /* Application Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				0280741A18455F9B006873DD /* MuggerDatabaseNames.h */,
+				02D72D981845540E004A8BB3 /* MuggerAppDelegate.h */,
+				02D72D991845540E004A8BB3 /* MuggerAppDelegate.m */,
+			);
+			name = "Application Delegate";
+			path = CoreDataTableViewController;
+			sourceTree = "<group>";
+		};
+		0280741818455EE4006873DD /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				02C5D01518471AEA00EB1366 /* MugsCDTVC.h */,
+				02C5D01618471AEA00EB1366 /* MugsCDTVC.m */,
+				02C5CFFD1845D58500EB1366 /* UsersCDTVC.h */,
+				02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */,
+				02C5CFFA1845CFB400EB1366 /* AddPhotoViewController.h */,
+				02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */,
+				0280740D18455C92006873DD /* CoreDataTableViewController.h */,
+				0280740E18455C92006873DD /* CoreDataTableViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		0280741918455F0E006873DD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02D72D9B1845540E004A8BB3 /* Main_iPhone.storyboard */,
+				02D72D9E1845540E004A8BB3 /* Main_iPad.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		0280741E1845768D006873DD /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				0280741B18457686006873DD /* Model.xcdatamodeld */,
+				02C5D01E1847297D00EB1366 /* User.h */,
+				02C5D01F1847297D00EB1366 /* User.m */,
+				02C5D01B1847297C00EB1366 /* Photo.h */,
+				02C5D01C1847297C00EB1366 /* Photo.m */,
+				02C5D0121846FF3700EB1366 /* User+Create.h */,
+				02C5D0131846FF3700EB1366 /* User+Create.m */,
+				02C5D01818471CAE00EB1366 /* Photo+Create.h */,
+				02C5D01918471CAE00EB1366 /* Photo+Create.m */,
+			);
+			name = "Data Model";
+			sourceTree = "<group>";
+		};
 		02D72D7D1845540E004A8BB3 = {
 			isa = PBXGroup;
 			children = (
@@ -114,10 +192,10 @@
 		02D72D8F1845540E004A8BB3 /* Mugger */ = {
 			isa = PBXGroup;
 			children = (
-				02D72D981845540E004A8BB3 /* MuggerAppDelegate.h */,
-				02D72D991845540E004A8BB3 /* MuggerAppDelegate.m */,
-				02D72D9B1845540E004A8BB3 /* Main_iPhone.storyboard */,
-				02D72D9E1845540E004A8BB3 /* Main_iPad.storyboard */,
+				0280741E1845768D006873DD /* Data Model */,
+				0280741918455F0E006873DD /* View */,
+				0280741818455EE4006873DD /* Controller */,
+				0280741718455E4D006873DD /* Application Delegate */,
 				02D72DA11845540E004A8BB3 /* MuggerViewController.h */,
 				02D72DA21845540E004A8BB3 /* MuggerViewController.m */,
 				02D72DA41845540E004A8BB3 /* Images.xcassets */,
@@ -254,9 +332,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02C5D01D1847297C00EB1366 /* Photo.m in Sources */,
+				02C5D01718471AEA00EB1366 /* MugsCDTVC.m in Sources */,
+				02C5D01A18471CAE00EB1366 /* Photo+Create.m in Sources */,
 				02D72D961845540E004A8BB3 /* main.m in Sources */,
 				02D72D9A1845540E004A8BB3 /* MuggerAppDelegate.m in Sources */,
+				0280741218455C92006873DD /* CoreDataTableViewController.m in Sources */,
 				02D72DA31845540E004A8BB3 /* MuggerViewController.m in Sources */,
+				02C5D0141846FF3700EB1366 /* User+Create.m in Sources */,
+				02C5D0201847297D00EB1366 /* User.m in Sources */,
+				02C5CFFC1845CFB400EB1366 /* AddPhotoViewController.m in Sources */,
+				02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */,
+				0280741D18457686006873DD /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +562,7 @@
 				02D72DBD1845540E004A8BB3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		02D72DBE1845540E004A8BB3 /* Build configuration list for PBXNativeTarget "MuggerTests" */ = {
 			isa = XCConfigurationList;
@@ -483,8 +571,22 @@
 				02D72DC01845540E004A8BB3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0280741B18457686006873DD /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0280741C18457686006873DD /* Model.xcdatamodel */,
+			);
+			currentVersion = 0280741C18457686006873DD /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 02D72D7E1845540E004A8BB3 /* Project object */;
 }
