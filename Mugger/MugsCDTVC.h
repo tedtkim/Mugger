@@ -9,7 +9,7 @@
 #import "CoreDataTableViewController.h"
 #import "User.h"
 
-// Uses cell: "Photo Cell"
+// Uses cell: "Mug Cell"
 @interface MugsCDTVC : CoreDataTableViewController
 
 // Model for this controller

@@ -1,0 +1,6 @@
+user:tedkim (Kim, Tae Dong)
+
+Additional comments:
+- I used ALAssetsLibrary+CustomPhotoAlbum category for creating a custom 
+  photo album for my app.  Link: http://www.touch-code-magazine.com/ios5-saving-photos-in-custom-photo-album-category-for-download/
+  Note: I modified the completion block signature to contain the NSURL for photo image as well.

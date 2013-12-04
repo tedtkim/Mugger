@@ -9,13 +9,9 @@
 /* Begin PBXBuildFile section */
 		0280741218455C92006873DD /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0280740E18455C92006873DD /* CoreDataTableViewController.m */; };
 		0280741D18457686006873DD /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0280741B18457686006873DD /* Model.xcdatamodeld */; };
-		02C5CFFC1845CFB400EB1366 /* AddPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */; };
 		02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */; };
 		02C5D0141846FF3700EB1366 /* User+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D0131846FF3700EB1366 /* User+Create.m */; };
 		02C5D01718471AEA00EB1366 /* MugsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01618471AEA00EB1366 /* MugsCDTVC.m */; };
-		02C5D01A18471CAE00EB1366 /* Photo+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01918471CAE00EB1366 /* Photo+Create.m */; };
-		02C5D01D1847297C00EB1366 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01C1847297C00EB1366 /* Photo.m */; };
-		02C5D0201847297D00EB1366 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01F1847297D00EB1366 /* User.m */; };
 		02D72D8A1845540E004A8BB3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D891845540E004A8BB3 /* Foundation.framework */; };
 		02D72D8C1845540E004A8BB3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D8B1845540E004A8BB3 /* CoreGraphics.framework */; };
 		02D72D8E1845540E004A8BB3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D8D1845540E004A8BB3 /* UIKit.framework */; };
@@ -31,6 +27,13 @@
 		02D72DAE1845540E004A8BB3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D72D8D1845540E004A8BB3 /* UIKit.framework */; };
 		02D72DB61845540E004A8BB3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02D72DB41845540E004A8BB3 /* InfoPlist.strings */; };
 		02D72DB81845540E004A8BB3 /* MuggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D72DB71845540E004A8BB3 /* MuggerTests.m */; };
+		02D767B3184977FE00912E94 /* Mug+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D767B2184977FE00912E94 /* Mug+Create.m */; };
+		02D767B6184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D767B5184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m */; };
+		02D767B8184C34B600912E94 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 02D767B7184C34B600912E94 /* README */; };
+		02FD47C2184F404C00BDA85A /* ShowMuggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02FD47C1184F404C00BDA85A /* ShowMuggerViewController.m */; };
+		02FD47C5184F55DC00BDA85A /* Mug.m in Sources */ = {isa = PBXBuildFile; fileRef = 02FD47C4184F55DC00BDA85A /* Mug.m */; };
+		02FD47C8184F55DD00BDA85A /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 02FD47C7184F55DD00BDA85A /* User.m */; };
+		02FD47CC184F6CB600BDA85A /* UIImage+CS193p.m in Sources */ = {isa = PBXBuildFile; fileRef = 02FD47CB184F6CB600BDA85A /* UIImage+CS193p.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,20 +51,12 @@
 		0280740E18455C92006873DD /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataTableViewController.m; path = CoreDataTableViewController/CoreDataTableViewController.m; sourceTree = "<group>"; };
 		0280741A18455F9B006873DD /* MuggerDatabaseNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MuggerDatabaseNames.h; path = ../MuggerDatabaseNames.h; sourceTree = "<group>"; };
 		0280741C18457686006873DD /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		02C5CFFA1845CFB400EB1366 /* AddPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPhotoViewController.h; sourceTree = "<group>"; };
-		02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPhotoViewController.m; sourceTree = "<group>"; };
 		02C5CFFD1845D58500EB1366 /* UsersCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCDTVC.h; sourceTree = "<group>"; };
 		02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCDTVC.m; sourceTree = "<group>"; };
 		02C5D0121846FF3700EB1366 /* User+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Create.h"; sourceTree = "<group>"; };
 		02C5D0131846FF3700EB1366 /* User+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+Create.m"; sourceTree = "<group>"; };
 		02C5D01518471AEA00EB1366 /* MugsCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MugsCDTVC.h; sourceTree = "<group>"; };
 		02C5D01618471AEA00EB1366 /* MugsCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MugsCDTVC.m; sourceTree = "<group>"; };
-		02C5D01818471CAE00EB1366 /* Photo+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Create.h"; sourceTree = "<group>"; };
-		02C5D01918471CAE00EB1366 /* Photo+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Create.m"; sourceTree = "<group>"; };
-		02C5D01B1847297C00EB1366 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
-		02C5D01C1847297C00EB1366 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
-		02C5D01E1847297D00EB1366 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		02C5D01F1847297D00EB1366 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		02D72D861845540E004A8BB3 /* Mugger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mugger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D72D891845540E004A8BB3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		02D72D8B1845540E004A8BB3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -82,6 +77,19 @@
 		02D72DB31845540E004A8BB3 /* MuggerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MuggerTests-Info.plist"; sourceTree = "<group>"; };
 		02D72DB51845540E004A8BB3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		02D72DB71845540E004A8BB3 /* MuggerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MuggerTests.m; sourceTree = "<group>"; };
+		02D767B1184977FE00912E94 /* Mug+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Mug+Create.h"; sourceTree = "<group>"; };
+		02D767B2184977FE00912E94 /* Mug+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Mug+Create.m"; sourceTree = "<group>"; };
+		02D767B4184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+CustomPhotoAlbum.h"; sourceTree = "<group>"; };
+		02D767B5184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+CustomPhotoAlbum.m"; sourceTree = "<group>"; };
+		02D767B7184C34B600912E94 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		02FD47C0184F404C00BDA85A /* ShowMuggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowMuggerViewController.h; sourceTree = "<group>"; };
+		02FD47C1184F404C00BDA85A /* ShowMuggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowMuggerViewController.m; sourceTree = "<group>"; };
+		02FD47C3184F55DC00BDA85A /* Mug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mug.h; sourceTree = "<group>"; };
+		02FD47C4184F55DC00BDA85A /* Mug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mug.m; sourceTree = "<group>"; };
+		02FD47C6184F55DD00BDA85A /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		02FD47C7184F55DD00BDA85A /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		02FD47CA184F6CB600BDA85A /* UIImage+CS193p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+CS193p.h"; sourceTree = "<group>"; };
+		02FD47CB184F6CB600BDA85A /* UIImage+CS193p.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+CS193p.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,12 +130,12 @@
 		0280741818455EE4006873DD /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				02FD47C0184F404C00BDA85A /* ShowMuggerViewController.h */,
+				02FD47C1184F404C00BDA85A /* ShowMuggerViewController.m */,
 				02C5D01518471AEA00EB1366 /* MugsCDTVC.h */,
 				02C5D01618471AEA00EB1366 /* MugsCDTVC.m */,
 				02C5CFFD1845D58500EB1366 /* UsersCDTVC.h */,
 				02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */,
-				02C5CFFA1845CFB400EB1366 /* AddPhotoViewController.h */,
-				02C5CFFB1845CFB400EB1366 /* AddPhotoViewController.m */,
 				0280740D18455C92006873DD /* CoreDataTableViewController.h */,
 				0280740E18455C92006873DD /* CoreDataTableViewController.m */,
 			);
@@ -147,14 +155,16 @@
 			isa = PBXGroup;
 			children = (
 				0280741B18457686006873DD /* Model.xcdatamodeld */,
-				02C5D01E1847297D00EB1366 /* User.h */,
-				02C5D01F1847297D00EB1366 /* User.m */,
-				02C5D01B1847297C00EB1366 /* Photo.h */,
-				02C5D01C1847297C00EB1366 /* Photo.m */,
+				02FD47C6184F55DD00BDA85A /* User.h */,
+				02FD47C7184F55DD00BDA85A /* User.m */,
+				02FD47C3184F55DC00BDA85A /* Mug.h */,
+				02FD47C4184F55DC00BDA85A /* Mug.m */,
 				02C5D0121846FF3700EB1366 /* User+Create.h */,
 				02C5D0131846FF3700EB1366 /* User+Create.m */,
-				02C5D01818471CAE00EB1366 /* Photo+Create.h */,
-				02C5D01918471CAE00EB1366 /* Photo+Create.m */,
+				02D767B1184977FE00912E94 /* Mug+Create.h */,
+				02D767B2184977FE00912E94 /* Mug+Create.m */,
+				02D767B4184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.h */,
+				02D767B5184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -162,6 +172,7 @@
 		02D72D7D1845540E004A8BB3 = {
 			isa = PBXGroup;
 			children = (
+				02D767B7184C34B600912E94 /* README */,
 				02D72D8F1845540E004A8BB3 /* Mugger */,
 				02D72DB11845540E004A8BB3 /* MuggerTests */,
 				02D72D881845540E004A8BB3 /* Frameworks */,
@@ -192,6 +203,7 @@
 		02D72D8F1845540E004A8BB3 /* Mugger */ = {
 			isa = PBXGroup;
 			children = (
+				02FD47C9184F6CB600BDA85A /* UIImage+CS193p */,
 				0280741E1845768D006873DD /* Data Model */,
 				0280741918455F0E006873DD /* View */,
 				0280741818455EE4006873DD /* Controller */,
@@ -231,6 +243,15 @@
 				02D72DB41845540E004A8BB3 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		02FD47C9184F6CB600BDA85A /* UIImage+CS193p */ = {
+			isa = PBXGroup;
+			children = (
+				02FD47CA184F6CB600BDA85A /* UIImage+CS193p.h */,
+				02FD47CB184F6CB600BDA85A /* UIImage+CS193p.m */,
+			);
+			path = "UIImage+CS193p";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +331,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02D767B8184C34B600912E94 /* README in Resources */,
 				02D72DA01845540E004A8BB3 /* Main_iPad.storyboard in Resources */,
 				02D72DA51845540E004A8BB3 /* Images.xcassets in Resources */,
 				02D72D9D1845540E004A8BB3 /* Main_iPhone.storyboard in Resources */,
@@ -332,18 +354,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02C5D01D1847297C00EB1366 /* Photo.m in Sources */,
+				02FD47C8184F55DD00BDA85A /* User.m in Sources */,
+				02D767B3184977FE00912E94 /* Mug+Create.m in Sources */,
 				02C5D01718471AEA00EB1366 /* MugsCDTVC.m in Sources */,
-				02C5D01A18471CAE00EB1366 /* Photo+Create.m in Sources */,
 				02D72D961845540E004A8BB3 /* main.m in Sources */,
 				02D72D9A1845540E004A8BB3 /* MuggerAppDelegate.m in Sources */,
 				0280741218455C92006873DD /* CoreDataTableViewController.m in Sources */,
+				02FD47C5184F55DC00BDA85A /* Mug.m in Sources */,
 				02D72DA31845540E004A8BB3 /* MuggerViewController.m in Sources */,
 				02C5D0141846FF3700EB1366 /* User+Create.m in Sources */,
-				02C5D0201847297D00EB1366 /* User.m in Sources */,
-				02C5CFFC1845CFB400EB1366 /* AddPhotoViewController.m in Sources */,
 				02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */,
+				02FD47CC184F6CB600BDA85A /* UIImage+CS193p.m in Sources */,
 				0280741D18457686006873DD /* Model.xcdatamodeld in Sources */,
+				02D767B6184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
+				02FD47C2184F404C00BDA85A /* ShowMuggerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +442,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -458,6 +483,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -480,6 +506,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tae Dong Kim (E7KV7RE4T7)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mugger/Mugger-Prefix.pch";
 				INFOPLIST_FILE = "Mugger/Mugger-Info.plist";
@@ -493,6 +520,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tae Dong Kim (E7KV7RE4T7)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mugger/Mugger-Prefix.pch";
 				INFOPLIST_FILE = "Mugger/Mugger-Info.plist";

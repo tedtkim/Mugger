@@ -2,19 +2,19 @@
 //  User.m
 //  Mugger
 //
-//  Created by Ted Kim on 11/27/13.
+//  Created by Ted Kim on 12/4/13.
 //  Copyright (c) 2013 CS193p. All rights reserved.
 //
 
 #import "User.h"
-#import "Photo.h"
+#import "Mug.h"
 
 
 @implementation User
 
 @dynamic name;
 @dynamic topScore;
-@dynamic photos;
-@dynamic topScorePhoto;
+@dynamic mugs;
+@dynamic topScoreMug;
 
 @end

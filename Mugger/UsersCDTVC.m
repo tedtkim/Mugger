@@ -9,7 +9,7 @@
 #import "UsersCDTVC.h"
 #import "MuggerDatabaseNames.h"
 #import "User+Create.h"
-#import "Photo.h"
+#import "Mug.h"
 #import "MugsCDTVC.h"
 
 @interface UsersCDTVC () <UIAlertViewDelegate>
@@ -59,14 +59,14 @@
     User *user = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = user.name;
 
-    if (user.topScorePhoto) {
-        Photo *photo = user.topScorePhoto;
-        cell.detailTextLabel.text = photo.subtitle;
+    if (user.topScoreMug) {
+        Mug *mug = user.topScoreMug;
+        cell.detailTextLabel.text = mug.subtitle;
 
-        if (photo.thumbnailData) {
-            cell.imageView.image = [UIImage imageWithData:photo.thumbnailData];
+        if (mug.thumbnailData) {
+            cell.imageView.image = [UIImage imageWithData:mug.thumbnailData];
         } else {
-            NSLog(@"[%@ %@] user.topScorePhoto does not have thumbnailData", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+            NSLog(@"[%@ %@] user.topScoreMug does not have thumbnailData", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
         }
     }
     return cell;
@@ -74,11 +74,10 @@
 
 #pragma mark - New User
 
-// For adding new user
+// Using UIAlertView to add new user
 - (IBAction)addUserBarButtonSelected:(UIBarButtonItem *)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add New User" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alert.autoresizesSubviews = TRUE;
     UITextField *textField = [alert textFieldAtIndex:0];
     textField.placeholder = @"Unique user name";
     [alert show];
@@ -107,16 +106,17 @@
 
 #pragma mark - Navigation
 
-// prepares MugsCDTVC to show list of photos for a given user, used either when
+// prepares MugsCDTVC to show list of mugs for a given user, used either when
 // segueing to an MugsCDTVC or when our UISplitViewController's Detail view
 // controller is an MugsCDTVC
 - (void)prepareMugsCDTVC:(MugsCDTVC *)cdtvc forUser:(User *)user
 {
-    cdtvc.title = user.name;
+    cdtvc.user = user;
+    cdtvc.title = [NSString stringWithFormat:@"%@'s Mugs", user.name];
     
     // Setup fetch request
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
-    request.predicate = [NSPredicate predicateWithFormat:@"photo.user = %@", user];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Mug"];
+    request.predicate = [NSPredicate predicateWithFormat:@"user = %@", user];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"score"
                                                               ascending:NO
                                                                selector:@selector(compare:)]];
@@ -131,7 +131,7 @@
 {
     if ([sender isKindOfClass:[UITableViewCell class]]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        if (indexPath && [segue.identifier isEqualToString:@"Display User Photos"]) {
+        if (indexPath && [segue.identifier isEqualToString:@"Display User Mugs"]) {
             User *user = [self.fetchedResultsController objectAtIndexPath:indexPath];
             
             if ([segue.destinationViewController isKindOfClass:[MugsCDTVC class]]) {

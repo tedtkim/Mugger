@@ -1,8 +1,8 @@
 //
-//  Photo.h
+//  Mug.h
 //  Mugger
 //
-//  Created by Ted Kim on 11/27/13.
+//  Created by Ted Kim on 12/4/13.
 //  Copyright (c) 2013 CS193p. All rights reserved.
 //
 
@@ -11,14 +11,14 @@
 
 @class User;
 
-@interface Photo : NSManagedObject
+@interface Mug : NSManagedObject
 
-@property (nonatomic, retain) NSString * imageURL;
-@property (nonatomic, retain) NSData * thumbnailData;
-@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * mugURL;
 @property (nonatomic, retain) NSNumber * score;
 @property (nonatomic, retain) NSString * subtitle;
+@property (nonatomic, retain) NSData * thumbnailData;
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) User *topScoreForUser;
 @property (nonatomic, retain) User *user;
-@property (nonatomic, retain) User *topScoreUser;
 
 @end

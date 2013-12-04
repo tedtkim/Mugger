@@ -10,7 +10,7 @@
 #import "User.h"
 
 // Uses cell "User Cell"
-// Displays each user's top photo thumbnail and score
+// Displays each user's top mug thumbnail and score
 
 @interface UsersCDTVC : CoreDataTableViewController
 
