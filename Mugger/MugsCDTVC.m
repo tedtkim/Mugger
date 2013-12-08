@@ -302,4 +302,35 @@
     return NO;
 }
 
+// For allowing deletes
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES - we will be able to delete all rows
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // This check isn't strictly necessary since we only allow deletes, but doing it anyway
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Mug *mug = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        // Before deleting, we'll go one extra step and clear it out from detail (if applicable)
+        id detail = self.splitViewController.viewControllers[1];
+        if ([detail isKindOfClass:[UINavigationController class]]) {
+            detail = [((UINavigationController *)detail).viewControllers firstObject];
+        }
+        
+        if ([detail isKindOfClass:[ShowMuggerViewController class]]) {
+            ShowMuggerViewController *smvc = (ShowMuggerViewController *)detail;
+            if ([mug isEqual:smvc.mug]) {
+                smvc.mug = nil;
+            }
+        }
+        
+        // Now clean!
+        [mug.managedObjectContext deleteObject:mug];
+    }
+}
+
 @end

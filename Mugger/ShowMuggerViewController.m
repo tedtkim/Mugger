@@ -119,6 +119,7 @@
         self.annotationToggle.on = NO;
         [self getMug];
     } else {
+        self.imageView.image = nil;
         self.view.hidden = YES;
     }
 }

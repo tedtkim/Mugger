@@ -8,6 +8,7 @@
 
 #import "UsersCDTVC.h"
 #import "MuggerDatabaseNames.h"
+#import "ShowMuggerViewController.h"
 #import "User+Create.h"
 #import "Mug.h"
 #import "MugsCDTVC.h"
@@ -70,6 +71,37 @@
         }
     }
     return cell;
+}
+
+// For allowing deletes
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES - we will be able to delete all rows
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // This check isn't strictly necessary since we only allow deletes, but doing it anyway
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        User *user = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        // Before deleting, we'll go one extra step and clear it out from detail (if applicable)
+        id detail = self.splitViewController.viewControllers[1];
+        if ([detail isKindOfClass:[UINavigationController class]]) {
+            detail = [((UINavigationController *)detail).viewControllers firstObject];
+        }
+        
+        if ([detail isKindOfClass:[ShowMuggerViewController class]]) {
+            ShowMuggerViewController *smvc = (ShowMuggerViewController *)detail;
+            if ([user isEqual:smvc.mug.user]) {
+                smvc.mug = nil;
+            }
+        }
+        
+        // Now clean!
+        [user.managedObjectContext deleteObject:user];
+    }
 }
 
 #pragma mark - New User

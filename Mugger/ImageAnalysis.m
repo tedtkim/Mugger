@@ -26,16 +26,16 @@
                                CIDetectorEyeBlink : [NSNumber numberWithBool:YES],
                                CIDetectorSmile : [NSNumber numberWithBool:YES] };
     
+    // Set enhanced image into info
+    CIImage *adjusted = [self applyAutoEnhancement:ciImage options:options];
+    [info setValue:[[UIImage alloc] initWithCIImage:adjusted] forKey:MUGGER_ENHANCED_IMAGE];
+    
     NSArray *features = [self facesInImage:ciImage options:options];
     NSLog(@"Found %lu faces", (unsigned long)[features count]);
     
     // Draw and set annotations
     UIImage *annotations = [self drawAnnotations:features info:info];
     [info setValue:annotations forKey:MUGGER_ANNOTATIONS];
-
-    // Set enhanced image into info
-    CIImage *adjusted = [self applyAutoEnhancement:ciImage options:options];
-    [info setValue:[[UIImage alloc] initWithCIImage:adjusted] forKey:MUGGER_ENHANCED_IMAGE];
     
     return info;
 }
