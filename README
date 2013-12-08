@@ -1,6 +1,32 @@
 user:tedkim (Kim, Tae Dong)
 
 Additional comments:
-- I used ALAssetsLibrary+CustomPhotoAlbum category for creating a custom 
-  photo album for my app.  Link: http://www.touch-code-magazine.com/ios5-saving-photos-in-custom-photo-album-category-for-download/
-  Note: I modified the completion block signature to contain the NSURL for photo image as well.
+
+- I used ALAssetsLibrary+CustomPhotoAlbum category for creating a custom photo album for
+  my app.  Link: http://www.touch-code-magazine.com/ios5-saving-photos-in-custom-photo-album-category-for-download/
+  Note: I modified the completion block signature to contain the NSURL for photo image
+  as well.
+
+- In MugsCDTVC.m, using UIActionSheet's showFromBarButtonItem: for iPad was a
+  surprisingly difficult task.  Mainly, presenting an action sheet from the master view
+  of a split view controller via BarButtonItem would make it slide up from the bottom
+  like showInView.  This was particularly strange because presentPopoverFromBarButtonItem
+  worked flawlessly (see image picker popover presentation in MugsCDTVC.m) in either
+  orientation, and was using the same bar button item as target.  
+  
+  It appears Apple considers this as two popovers (one being the master view in portrait 
+  mode), which violates HIG.  After hours of research and consideration, I decided to
+  keep the simple solution which maintains usability and works for landscape, since
+  potential solutions were not very elegant.
+  
+- Using CIImage's autoAdjustmentFiltersWithOptions, I apply apple's auto adjustments
+  (which includes filters like CIFaceBalance, CIVibrance, CIToneCurve, 
+  CIHighlightShadowAdjust, etc) and present the user with an option to use it.
+  
+- Core Image and UIKit share different coordinate systems, and took awhile to get 
+  correctly.
+
+- If the mug is cut off at the bottom, mouth position gets affected.  I looked into 
+  possible scaling/transform issues, but with eyes being correct and size of annotated
+  image as expected, it appears it's simply CIDetector unable to adjust for edges at
+  bottom.  I'd welcome feedback if you know a solution!

@@ -22,7 +22,6 @@
                           }
 
                           //add the asset to the custom photo album
-                            NSLog(@"Finished writing image to Saved Photos Album with URL: %@", assetURL);
                           [self addAssetURL: assetURL 
                                     toAlbum:albumName 
                         withCompletionBlock:completionBlock];
@@ -53,7 +52,6 @@
                                           
                                           //run the completion block
                                           completionBlock(nil, assetURL);
-                                          NSLog(@"Added photo to %@ with URL: %@", albumName, assetURL);
                                       }
                                      failureBlock:^(NSError *error) {
                                          completionBlock(error, nil);

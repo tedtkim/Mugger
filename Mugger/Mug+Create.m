@@ -14,7 +14,6 @@
 {
     Mug *mug = nil;
     if (mugURL && user) {
-        NSLog(@"Adding new mug using non-nil mugURL: %@ and user: %@", mugURL, user);
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Mug"];
         request.predicate = [NSPredicate predicateWithFormat:@"(mugURL = %@) AND (user = %@)", [mugURL absoluteString], user];
         
@@ -23,15 +22,12 @@
         
         if (error || !matches || ([matches count] > 1)) {
             // handle error
-            NSLog(@"Error at add new mug! matches: %@, error: %@", matches, error);
         } else if (![matches count]) {
             mug = [NSEntityDescription insertNewObjectForEntityForName:@"Mug"
                                                 inManagedObjectContext:context];
             mug.mugURL = [mugURL absoluteString];
             mug.user = user;
-            NSLog(@"Added new mug successfully, using mug.mugURL = %@!", mug.mugURL);
         } else {
-            NSLog(@"Found existing match for this at add new mug!");
             mug = [matches lastObject];
         }
     }

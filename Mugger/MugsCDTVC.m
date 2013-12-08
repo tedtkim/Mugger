@@ -29,7 +29,7 @@
 {
     [super viewWillDisappear:animated];
     
-    // Let's make sure to handle our popovers
+    // Let's make sure to handle our action sheets and popovers
     [self dismissExistingActionSheet];
     [self dismissExistingPopover];
     self.mug = nil;
@@ -124,7 +124,7 @@
         actionSheet.cancelButtonIndex = [self.mugFetchers count];
         
         if ([self isIpad]) {
-            [actionSheet showFromBarButtonItem:sender animated:YES];
+            [actionSheet showFromBarButtonItem:self.addMugBarButton animated:YES];            
         } else {
             [actionSheet showInView:self.view];
         }
@@ -179,7 +179,6 @@
         } else {
             NSLog(@"[%@ %@] Can't present desired media type!", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
         }
-        NSLog(@"Source Type: %@, with enum value: %d", choice, sourceType.intValue);
     }
 }
 
@@ -196,18 +195,21 @@
                     toAlbum:MUGGER_ALBUM_NAME
         withCompletionBlock:^(NSError *error, NSURL *url) {
             if (!error) {
-                NSLog(@"Trying to save new mug with url: %@", url);
                 self.mug = [Mug mugWithURL:url
                                    forUser:self.user
                     inManagedObjectContext:self.user.managedObjectContext];
-                if (self.mug) [self performSegueWithIdentifier:@"Show Mugger" sender:picker];
+                if (self.mug) {
+                    // If not presenting to detail view, we will segue
+                    if (![self presentMugToDetailView:self.mug]) {
+                        [self performSegueWithIdentifier:@"Show Mugger From ImagePicker" sender:picker];
+                    }
+                }
                 // TODO: can add activity indicator if takes too long
             } else {
                 NSLog(@"[%@ %@] Error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error description]);
                 return;
             }
         }];
-    NSLog(@"imagePickerController didFinishPickingMediaWithInfo called!");
     if (self.popover) {
         [self dismissExistingPopover];
     } else {
@@ -234,7 +236,6 @@
 
 #pragma mark - Navigation
 
-/* TODO: not needed yet
 // prepares the given ShowMuggerViewController to show the given mug
 // used either when segueing to an ShowMuggerViewController
 //   or when our UISplitViewController's Detail view controller is an ShowMuggerViewController
@@ -242,20 +243,22 @@
 - (void)prepareShowMuggerViewController:(ShowMuggerViewController *)smvc toDisplayMug:(Mug *)mug
 {
     smvc.mug = mug;
+    smvc.title = [NSString stringWithFormat:@"Mug for %@", self.user.name];
 }
- */
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"Show Mugger"] &&
-        [segue.destinationViewController isKindOfClass:[ShowMuggerViewController class]]) {
-        
+    if ([segue.destinationViewController isKindOfClass:[ShowMuggerViewController class]]) {
+    
         Mug *mug;
-        if ([sender isKindOfClass:[UIImagePickerController class]]) {
+        if ([segue.identifier isEqualToString:@"Show Mugger From ImagePicker"] &&
+            [sender isKindOfClass:[UIImagePickerController class]]) {
+            
             // Image picker has stored the mug to use for us temporarily
             mug = self.mug;
             self.mug = nil;
-        } else if ([sender isKindOfClass:[UITableViewCell class]]) {
+        } else if ([segue.identifier isEqualToString:@"Show Mugger From Mug Cell"] &&
+                   [sender isKindOfClass:[UITableViewCell class]]) {
             // Mug can be found from table cell
             NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
             if (indexPath) {
@@ -264,40 +267,39 @@
         }
         
         if (mug) {
-            ShowMuggerViewController *smvc = segue.destinationViewController;
-            smvc.mug = mug;
-            // TODO [self prepareShowMuggerViewController:segue.destinationViewController toDisplayMug:mug];
+            [self prepareShowMuggerViewController:segue.destinationViewController toDisplayMug:mug];
         }
     }
 }
 
 
-/* TODO: Copied from Region
 #pragma mark - UITableViewDelegate
 
 // when a row is selected and we are in a UISplitViewController,
-//   this updates the Detail ImageViewController (instead of segueing to it)
-// knows how to find an ImageViewController inside a UINavigationController in the Detail too
+//   this updates the Detail ShowMuggerViewController (instead of segueing to it)
+// knows how to find an ShowMuggerViewController inside a UINavigationController in the Detail too
 // otherwise, this does nothing (because detail will be nil and not "isKindOfClass:" anything)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // get the Detail view controller in our UISplitViewController (nil if not in one)
+    Mug *mug = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [self presentMugToDetailView:mug];
+}
+
+// Returns YES if we successfully present mug to detail view
+- (BOOL)presentMugToDetailView:(Mug *)mug
+{
+    // nil if not in UISplitViewController
     id detail = self.splitViewController.viewControllers[1];
-    // if Detail is a UINavigationController, look at its root view controller to find it
     if ([detail isKindOfClass:[UINavigationController class]]) {
         detail = [((UINavigationController *)detail).viewControllers firstObject];
     }
-    // is the Detail an ImageViewController?
-    if ([detail isKindOfClass:[ImageViewController class]]) {
-        // yes ... we know how to update that!
-        Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [self prepareImageViewController:detail toDisplayPhoto:photo];
+    
+    if ([detail isKindOfClass:[ShowMuggerViewController class]]) {
+        [self prepareShowMuggerViewController:detail toDisplayMug:mug];
+        return YES;
     }
+    return NO;
 }
-
-
-
-*/
 
 @end

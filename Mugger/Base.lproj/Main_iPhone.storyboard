@@ -67,11 +67,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Mug Cell" textLabel="QPo-CS-Ls9" detailTextLabel="1l6-jV-Gsa" style="IBUITableViewCellStyleSubtitle" id="Lrv-eV-O4v">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Mug Cell" textLabel="QPo-CS-Ls9" detailTextLabel="1l6-jV-Gsa" style="IBUITableViewCellStyleSubtitle" id="Lrv-eV-O4v">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lrv-eV-O4v" id="QS7-zl-Njx">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QPo-CS-Ls9">
@@ -90,6 +90,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="jgi-yz-nwB" kind="push" identifier="Show Mugger From Mug Cell" id="Cia-zn-FiX"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -106,7 +109,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addMugBarButton" destination="le5-at-K4H" id="zeW-us-v4h"/>
-                        <segue destination="jgi-yz-nwB" kind="push" identifier="Show Mugger" id="aQM-VF-kNd"/>
+                        <segue destination="jgi-yz-nwB" kind="push" identifier="Show Mugger From ImagePicker" id="aQM-VF-kNd"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jpe-t6-zL2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -200,4 +203,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="Cia-zn-FiX"/>
+    </inferredMetricsTieBreakers>
 </document>
