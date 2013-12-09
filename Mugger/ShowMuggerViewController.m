@@ -7,21 +7,35 @@
 //
 
 #import "ShowMuggerViewController.h"
+#import "ScoreDetailsViewController.h"
 #import "UIImage+CS193p.h"
 #import "ImageAnalysis.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ShowMuggerViewController () <UITextFieldDelegate, UISplitViewControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
+// UI Controls
 @property (weak, nonatomic) IBOutlet UITextField *mugTitle;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *originalOrEnhanced;
+@property (weak, nonatomic) IBOutlet UISwitch *annotationToggle;
+
+// UI to update
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) UIImageView *overlayImageView;  // For annotations
 @property (weak, nonatomic) IBOutlet UILabel *mugScore;
+
+// Other properties
 @property (nonatomic, strong) ALAssetsLibrary *library;
+@property (strong, nonatomic) NSDictionary *imageInfo;  // From ImageAnalysis
+// this is weak because we want it to go back to nil
+//   when no one else has strong pointer to the popover (i.e. it is dismissed)
+@property (weak, nonatomic) UIPopoverController *scoreDetailsPopoverController;
+
+// iPad UI to allow easier viewing of controls without hiding picture
+@property (weak, nonatomic) IBOutlet UIView *bottomViewForUI;
+
 // TODO @property (nonatomic, weak) UIActionSheet *actionSheetFilter;
 // TODO @property (nonatomic, strong) NSArray *filters; // of CIFilter
-@property (weak, nonatomic) IBOutlet UISwitch *annotationToggle;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *originalOrEnhanced;
-@property (strong, nonatomic) NSDictionary *imageInfo;  // From ImageAnalysis
-@property (strong, nonatomic) UIImageView *overlayImageView;  // For annotations
 @end
 
 @implementation ShowMuggerViewController
@@ -75,6 +89,30 @@
     self.library = nil; // TODO: needs to be singleton?
 }
 
+// We do this to set semi-transparent background colors for UI controls at top at bottom, in landscape mode of iPad
+// Let's have some fun and animate it :)
+- (void)viewWillLayoutSubviews
+{
+    // I considered doing this in willRotateToInterfaceOrientation, but decided against it to cover for initial load case
+    [super viewWillLayoutSubviews];
+    
+    if (self.bottomViewForUI) {
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.bottomViewForUI.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+            } completion:NULL];
+        } else {
+            [UIView animateWithDuration:0.2 animations:^{
+                self.bottomViewForUI.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8f];
+            } completion:NULL];
+        }
+    }
+}
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+
+}
+
 // Here's where we'll update title - it might seem a lot, but it's just a title
 - (void)titleChanged:(NSNotification *)notification
 {
@@ -109,6 +147,11 @@
 - (void)setMug:(Mug *)mug
 {
     _mug = mug;
+    
+    // TODO: not needed!
+    // Must dismiss popover if master changes mug
+    //[self.scoreDetailsPopoverController dismissPopoverAnimated:YES];
+    
     if (mug) {
         self.view.hidden = NO;
         [self enableUIControls:YES];
@@ -175,7 +218,6 @@
 // Convenience method for easier maintenance
 - (void)showMugWithImage:(UIImage *)image thumbnail:(UIImage *)thumbnail
 {
-    NSLog(@"NEW Image's size: %@", NSStringFromCGSize(image.size));
     self.imageView.image = image;
     
     // Set thumbnail
@@ -184,17 +226,28 @@
     }
     // Display title & score
     if (self.mug.title) {
-        // TODO: attributed string?
         self.mugTitle.text = self.mug.title;
     }
 
-    [self calculateScore:image];
+    self.imageInfo = [ImageAnalysis analyzeImage:image];
+    
+    
+    NSNumber *score = [self.imageInfo valueForKey:MUGGER_SCORE_TOTAL];
+    UIColor *scoreColor = [ImageAnalysis scoreColor:[score intValue]];
+    
+    NSDictionary *attrForCombined = @{ NSForegroundColorAttributeName : scoreColor,
+                                       NSStrokeColorAttributeName : [UIColor blackColor],
+                                       NSStrokeWidthAttributeName : @-4};
+    
+    self.mugScore.attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", [score intValue]]
+                                                                          attributes:attrForCombined];
+    
+    self.view.backgroundColor = [scoreColor colorWithAlphaComponent:0.5f];
 }
 
+/* TODO
 - (void)calculateScore:(UIImage *)image
 {
-    NSLog(@"Calculate score!");
-    /* TODO
     self.filters = [ImageAnalysis analyzeImage:image];
     
     CIImage* ciImage = [[CIImage alloc] initWithCGImage:image.CGImage];
@@ -202,21 +255,25 @@
         [filter setValue:ciImage forKey:kCIInputImageKey];
         //ciImage = filter.outputImage;
     }
-     */
-    
     // TODO: Perhaps launch in asynchronous thread
-    self.imageInfo = [ImageAnalysis analyzeImage:image];
 }
+*/
+
 
 // TODO: may not be necessary
-#pragma mark - Save Mug
-- (IBAction)saveMug:(UIBarButtonItem *)sender {
-
+#pragma mark - Edit Title
+- (IBAction)editTitle:(UIBarButtonItem *)sender {
 }
 
 // Switch to toggle annotations
 - (IBAction)toggleAnnotationSwitch:(UISwitch *)sender {
-    if (sender.on) {
+    [self toggleAnnotationSwitchTo:sender.on];
+}
+
+// Doing this to allow for gesture calling programmatically
+- (void)toggleAnnotationSwitchTo:(BOOL)isOn
+{
+    if (isOn) {
         self.overlayImageView.image = [self.imageInfo valueForKey:MUGGER_ANNOTATIONS];
         self.overlayImageView.hidden = NO;
     } else {
@@ -238,6 +295,33 @@
 }
 
 
+#pragma mark - Gestures
+
+// Fun gestures to toggle annotations switch on or off
+- (IBAction)swipeLeft:(UISwipeGestureRecognizer *)sender {
+    if (self.annotationToggle.enabled && self.annotationToggle.on) {
+        [self.annotationToggle setOn:NO animated:YES];
+        [self toggleAnnotationSwitchTo:NO];
+    }
+}
+- (IBAction)swipeRight:(UISwipeGestureRecognizer *)sender {
+    if (self.annotationToggle.enabled && !self.annotationToggle.on) {
+        [self.annotationToggle setOn:YES animated:YES];
+        [self toggleAnnotationSwitchTo:YES];
+    }
+}
+
+// If user long presses on image while annotations are on, let's
+// show them some details about the score!
+- (IBAction)longPress:(UILongPressGestureRecognizer *)sender {
+    if (self.annotationToggle.on && !self.scoreDetailsPopoverController) {
+        if (self.imageInfo) {
+            [self performSegueWithIdentifier:@"Show Score Details" sender:self];
+        }
+    }
+}
+
+
 #pragma mark - Helper Methods
 
 // Enable/disable UI Controls
@@ -246,6 +330,11 @@
     self.mugTitle.enabled = enable;
     self.annotationToggle.enabled = enable;
     self.originalOrEnhanced.enabled = enable;
+}
+
+- (BOOL)isIpad
+{
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
 /* TODO: if using filters later
@@ -278,11 +367,6 @@
  
 }
 
-- (BOOL)isIpad
-{
-    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
-}
-
 // Present image picker
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -297,7 +381,47 @@
 }
 */
 
+#pragma mark - Score Details
+#define SCORE_DETAILS_POPOVER_WIDTH 300.0
 
+// Specific to popover segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.destinationViewController isKindOfClass:[ScoreDetailsViewController class]]) {
+        ScoreDetailsViewController *scoreDetailsvc = (ScoreDetailsViewController *)segue.destinationViewController;
+        // if we are segueing to a popover, the segue itself will be a UIStoryboardPopoverSegue
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+            self.scoreDetailsPopoverController = popoverSegue.popoverController;
+        }
+        
+        scoreDetailsvc.imageInfo = self.imageInfo;
+
+        // Let's do one more step on popover to size the height properly
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            scoreDetailsvc.view.autoresizingMask = (UIViewAutoresizingFlexibleHeight);
+            CGFloat width = SCORE_DETAILS_POPOVER_WIDTH;
+            CGSize size = CGSizeMake(width, [scoreDetailsvc textViewHeightWithSetWidth:width]);
+            [self.scoreDetailsPopoverController setPopoverContentSize:size];
+            NSLog(@"setting popover content size:%@", NSStringFromCGSize(size));
+        }
+    }
+}
+
+/* Note: since I'm doing a manual segue triggered by gesture to perform popover
+ * segue, shouldPerformSegueWithIdentifer does not get called.
+ * source: https://twitter.com/lucianboboc/statuses/271620542518419456
+// don't show score details if it's already showing or we don't have one to show
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    NSLog(@"shouldPerformSegueWithIdentifier");
+    if ([identifier isEqualToString:@"Show Score Details"]) {
+        return self.scoreDetailsPopoverController ? NO : (self.imageInfo ? YES : NO);
+    } else {
+        return [super shouldPerformSegueWithIdentifier:identifier sender:sender];
+    }
+}
+ */
 
 #pragma mark - UITextFieldDelegate
 

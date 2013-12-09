@@ -128,51 +128,79 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ibu-B9-R3O">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ibu-B9-R3O">
                                 <rect key="frame" x="20" y="112" width="280" height="280"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="280" id="7n8-V8-KZP"/>
+                                    <constraint firstAttribute="width" constant="280" id="Lxf-bB-zpt"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Eh-jg-RNi">
-                                <rect key="frame" x="20" y="20" width="33" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mugger Score" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DY9-rs-mag">
+                                <rect key="frame" x="20" y="20" width="144" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="10R-uz-sXv">
-                                <rect key="frame" x="61" y="16" width="239" height="30"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3r-s8-GdA">
+                                <rect key="frame" x="172" y="20" width="128" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mugger Score" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DY9-rs-mag">
-                                <rect key="frame" x="106" y="54" width="109" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3r-s8-GdA">
-                                <rect key="frame" x="155" y="83" width="10" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="dEq-CO-mI5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dHa-1D-4gN">
+                                <rect key="frame" x="20" y="456" width="214" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="214" id="yVD-Kr-IN1"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Original"/>
+                                    <segment title="Enhanced"/>
+                                </segments>
+                                <connections>
+                                    <action selector="selectOriginalOrEnhanced:" destination="jgi-yz-nwB" eventType="valueChanged" id="1lb-oe-ks8"/>
+                                </connections>
+                            </segmentedControl>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gd1-aB-Hf5">
+                                <rect key="frame" x="251" y="453" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="toggleAnnotationSwitch:" destination="jgi-yz-nwB" eventType="valueChanged" id="5I5-L8-Cb1"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dHa-1D-4gN" firstAttribute="leading" secondItem="Ibu-B9-R3O" secondAttribute="leading" id="439-e6-UV6"/>
+                            <constraint firstItem="DY9-rs-mag" firstAttribute="top" secondItem="L3r-s8-GdA" secondAttribute="top" id="7AO-oY-NlI"/>
+                            <constraint firstAttribute="centerX" secondItem="Ibu-B9-R3O" secondAttribute="centerX" id="9qE-UX-ZTN"/>
+                            <constraint firstItem="L3r-s8-GdA" firstAttribute="top" secondItem="Mlo-jj-Rzs" secondAttribute="top" constant="20" symbolic="YES" id="AD0-3X-xR1"/>
+                            <constraint firstItem="gd1-aB-Hf5" firstAttribute="leading" secondItem="dHa-1D-4gN" secondAttribute="trailing" constant="17" id="BCO-vS-HIE"/>
+                            <constraint firstAttribute="trailing" secondItem="L3r-s8-GdA" secondAttribute="trailing" constant="20" symbolic="YES" id="aTb-bE-ehf"/>
+                            <constraint firstItem="DY9-rs-mag" firstAttribute="leading" secondItem="Ibu-B9-R3O" secondAttribute="leading" id="e13-iD-brH"/>
+                            <constraint firstItem="dHa-1D-4gN" firstAttribute="bottom" secondItem="gd1-aB-Hf5" secondAttribute="bottom" id="jxq-vn-lQb"/>
+                            <constraint firstAttribute="bottom" secondItem="dHa-1D-4gN" secondAttribute="bottom" constant="20" symbolic="YES" id="oEP-mz-9Sa"/>
+                            <constraint firstAttribute="centerY" secondItem="Ibu-B9-R3O" secondAttribute="centerY" id="tKh-da-P8W"/>
+                            <constraint firstItem="L3r-s8-GdA" firstAttribute="leading" secondItem="DY9-rs-mag" secondAttribute="trailing" constant="8" symbolic="YES" id="vXK-b3-zVx"/>
+                            <constraint firstItem="DY9-rs-mag" firstAttribute="centerY" secondItem="L3r-s8-GdA" secondAttribute="centerY" id="xWh-Ge-x0A"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="3LM-8L-1uW">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="1Am-05-W25">
+                        <barButtonItem key="rightBarButtonItem" title="Edit Title" id="SJ8-Z2-uVA">
                             <connections>
-                                <action selector="saveMug:" destination="jgi-yz-nwB" id="UZ5-9u-rba"/>
+                                <action selector="editTitle:" destination="jgi-yz-nwB" id="Zi9-8n-cUz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="Ibu-B9-R3O" id="cDP-Ba-Fwf"/>
                         <outlet property="mugScore" destination="L3r-s8-GdA" id="cn9-Pv-pEM"/>
-                        <outlet property="mugTitle" destination="10R-uz-sXv" id="du7-13-7do"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nrU-Kp-wUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -204,6 +232,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Cia-zn-FiX"/>
+        <segue reference="aQM-VF-kNd"/>
     </inferredMetricsTieBreakers>
 </document>

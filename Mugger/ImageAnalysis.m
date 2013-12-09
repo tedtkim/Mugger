@@ -7,6 +7,7 @@
 //
 
 #import "ImageAnalysis.h"
+#import "ScoringConstants.h"
 #import <ImageIO/CGImageProperties.h>
 
 @implementation ImageAnalysis
@@ -33,9 +34,13 @@
     NSArray *features = [self facesInImage:ciImage options:options];
     NSLog(@"Found %lu faces", (unsigned long)[features count]);
     
-    // Draw and set annotations
-    UIImage *annotations = [self drawAnnotations:features info:info];
-    [info setValue:annotations forKey:MUGGER_ANNOTATIONS];
+    // Draw annotations
+    UIImage *annotationsImage = [self drawAnnotations:features origImage:image];
+    [info setValue:annotationsImage forKey:MUGGER_ANNOTATIONS];
+
+    
+    // Score and set annotations
+    [self scoreAnnotations:features info:info];
     
     return info;
 }
@@ -106,24 +111,17 @@
         default:
             break;
     }
-    NSLog(@"Orientation: %d", orientation);
     return orientation;
 }
 
-
 #pragma mark - Drawing
-// Draw annotations and return the image
-+ (UIImage *)drawAnnotations:(NSArray *)faces info:(NSMutableDictionary *)info
+// Draw annotations
++ (UIImage *)drawAnnotations:(NSArray *)faces origImage:(UIImage *)origImage
 {
-    UIImage *origImage = [info valueForKey:MUGGER_ORIGINAL_IMAGE];
-    NSLog(@"Orig image size: %@", NSStringFromCGSize(origImage.size));
-    
     // Translate Core Image coordinates to UIKit's
     CGAffineTransform transform = CGAffineTransformMakeScale(1, -1);
     transform = CGAffineTransformTranslate(transform, 0, -origImage.size.height);
     
-    // 0.0 properly handles for retina-displays
-    //UIGraphicsBeginImageContextWithOptions(origImage.size, NO, 0.0);
     UIGraphicsBeginImageContext(origImage.size);
     
     for (CIFaceFeature *face in faces)
@@ -135,10 +133,8 @@
     UIImage *orientedAnnotations = [UIImage imageWithCGImage:[annotations CGImage]
                                                        scale:1.0
                                                  orientation:[origImage imageOrientation]];
-    NSLog(@"Annotation image size: %@", NSStringFromCGSize(orientedAnnotations.size));
     
     UIGraphicsEndImageContext();
-    
     return orientedAnnotations;
 }
 
@@ -147,28 +143,21 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     // Draw outline of face bounds
-    [[UIColor redColor] setStroke];
+    [[self faceBoundsColor] setStroke];
     CGContextSetLineWidth(context, 2.0);
     
     CGRect faceBoundsTransformed = CGRectStandardize(CGRectApplyAffineTransform(face.bounds, transform));
     CGContextStrokeRect(context, faceBoundsTransformed);
-    NSLog(@"Face bounds: %@", NSStringFromCGRect(faceBoundsTransformed));
-    NSLog(@"Face origin: %@", NSStringFromCGPoint(faceBoundsTransformed.origin));
-    NSLog(@"Face size: %@", NSStringFromCGSize(faceBoundsTransformed.size));
     
     [self drawEyeAnnotations:face usingTransform:transform];
     
     [self drawMouthAnnotations:face usingTransform:transform];
-    
-    if (face.hasFaceAngle)
-        NSLog(@"Face angle: %g", face.faceAngle);
 }
 
-// Other drawing helpers
 + (void)drawEyeAnnotations:(CIFaceFeature *)face usingTransform:(CGAffineTransform)transform
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    [[UIColor yellowColor] setStroke];
+    [[self eyeColor] setStroke];
     
     CGRect faceBoundsTransformed = CGRectStandardize(CGRectApplyAffineTransform(face.bounds, transform));
     
@@ -179,10 +168,7 @@
     if (face.hasLeftEyePosition) {
         CGPoint leftEyePositionTransformed = CGPointApplyAffineTransform(face.leftEyePosition, transform);
         
-        NSLog(@"Left eye %g %g", leftEyePositionTransformed.x, leftEyePositionTransformed.y);
-        
         if (face.leftEyeClosed) {
-            NSLog(@"* Left eye closed!");
             eyeHeight = eyeWidth/4;
         } else {
             eyeHeight = eyeWidth;
@@ -200,11 +186,8 @@
     if (face.hasRightEyePosition) {
         CGPoint rightEyePositionTransformed = CGPointApplyAffineTransform(face.rightEyePosition, transform);
         
-        NSLog(@"Right eye %g %g", rightEyePositionTransformed.x, rightEyePositionTransformed.y);
-        
         if (face.rightEyeClosed) {
             eyeHeight = eyeWidth/4;
-            NSLog(@"* Right eye closed!");
         } else {
             eyeHeight = eyeWidth;
         }
@@ -225,11 +208,10 @@
         CGPoint mouthPositionTransformed = CGPointApplyAffineTransform(face.mouthPosition, transform);
         
         CGContextRef context = UIGraphicsGetCurrentContext();
-        [[UIColor greenColor] setStroke];
+        [[self mouthColor] setStroke];
         
         CGFloat mouthWidth = faceBoundsTransformed.size.width/4;
         CGFloat mouthHeight = mouthWidth/4;
-        NSLog(@"Mouth %g %g, width: %g, height: %g", mouthPositionTransformed.x, mouthPositionTransformed.y, mouthWidth, mouthHeight);
         
         if (face.hasSmile) {
             NSLog(@":) Has smile! :)");
@@ -270,4 +252,212 @@
     }
 }
 
+
+#pragma mark - Scoring
+
+// I could have grafted scoring onto drawing, but separated for maintainability and legibility
+
+// Score annotations and set into dictionary
++ (int)scoreAnnotations:(NSArray *)faces info:(NSMutableDictionary *)info
+{
+    // To communicate face annotation details
+    NSMutableArray *faceAnnotations = [[NSMutableArray alloc] init];
+    
+    NSMutableDictionary *totalScoreDescription = [[NSMutableDictionary alloc] init];
+    int totalScore = 0;
+    
+    int positiveFaces = 0;  // count number of positive faces
+    for (CIFaceFeature *face in faces)
+    {
+        int faceScore = [self scoreFaceAnnotations:face andSet:faceAnnotations];
+        totalScore += faceScore;
+        if (faceScore > 0) positiveFaces++;
+    }
+    
+    if (![faces count]) {
+        totalScore += SCORE_NO_FACES_PENALTY;
+        [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_NO_FACES_PENALTY]
+                                 forKey:[NSString stringWithFormat:@"Where are the faces?"]];
+    } else if ([faces count] >= 10) {
+        totalScore += SCORE_TOO_MANY_FACES_PENALTY;
+        [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_TOO_MANY_FACES_PENALTY]
+                                 forKey:[NSString stringWithFormat:@"Way too many faces for a good mug shot"]];
+    } else {
+        totalScore += SCORE_FACE_BONUS * [faces count];
+        [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_FACE_BONUS * [faces count]]
+                                 forKey:[NSString stringWithFormat:@"%lu faces recognized", SCORE_FACE_BONUS * [faces count]]];
+        
+        if (!positiveFaces) {
+            totalScore += SCORE_NO_POSITIVE_FACES_PENALTY;
+            [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_NO_POSITIVE_FACES_PENALTY]
+                                     forKey:[NSString stringWithFormat:@"No positive scoring faces!"]];
+        } else {
+            totalScore += SCORE_POSITIVE_FACE_BONUS * positiveFaces;
+            [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_POSITIVE_FACE_BONUS * positiveFaces]
+                                     forKey:[NSString stringWithFormat:@"%d positive scoring faces bonus", positiveFaces]];
+            
+            if (positiveFaces == [faces count]) {
+                totalScore += SCORE_ALL_POSITIVE_FACE_BONUS;
+                [totalScoreDescription setValue:[NSNumber numberWithInteger:SCORE_ALL_POSITIVE_FACE_BONUS]
+                                         forKey:[NSString stringWithFormat:@"All %d faces in mug are positive scoring", positiveFaces]];
+            }
+        }
+    }
+    
+    [info setValue:[NSNumber numberWithInteger:totalScore] forKey:MUGGER_SCORE_TOTAL];
+    [info setValue:totalScoreDescription forKey:MUGGER_SCORE_TOTAL_DESC];
+    
+    [info setValue:faceAnnotations forKey:MUGGER_ANNOTATIONS_FACES];
+    
+    return totalScore;
+}
+
++ (int)scoreFaceAnnotations:(CIFaceFeature *)face andSet:(NSMutableArray *)facesArray
+{
+    NSMutableDictionary *faceDictionary = [[NSMutableDictionary alloc] init];
+    
+    int faceScore = 0;
+    NSMutableDictionary *faceScoreDescription = [[NSMutableDictionary alloc] init];
+    
+    if (face.hasFaceAngle) {
+        [faceDictionary setValue:[NSNumber numberWithFloat:face.faceAngle]
+                          forKey:MUGGER_FACE_ANGLE];
+        
+        faceScore += SCORE_FACE_ANGLE_BONUS;
+        [faceScoreDescription setValue:[NSNumber numberWithInteger:SCORE_FACE_ANGLE_BONUS]
+                                forKey:[NSString stringWithFormat:@"Has face angle of %g", face.faceAngle]];
+    }
+    
+    faceScore += [self scoreEyesAnnotations:face andSet:faceDictionary];
+    faceScore += [self scoreMouthAnnotations:face andSet:faceDictionary];
+    
+    [faceDictionary setValue:[NSNumber numberWithInteger:faceScore] forKey:MUGGER_FACE_SCORE];
+    [faceDictionary setValue:faceScoreDescription forKey:MUGGER_FACE_SCORE_DESC];
+    
+    [facesArray addObject:faceDictionary];
+
+    return faceScore;
+}
+
++ (int)scoreEyesAnnotations:(CIFaceFeature *)face andSet:(NSMutableDictionary *)faceDictionary
+{
+    int eyeScore = 0;
+    NSMutableDictionary *eyesScoreDescription = [[NSMutableDictionary alloc] init];
+    
+    int eyesCount = 0;
+    int openEyesCount = 0;
+    if (face.hasLeftEyePosition) {
+        [faceDictionary setValue:[NSNumber numberWithBool:!face.leftEyeClosed]
+                          forKey:MUGGER_FACE_LEFT_EYE_IS_OPEN];
+        eyesCount++;
+        if (!face.leftEyeClosed) openEyesCount++;
+    }
+    if (face.hasRightEyePosition) {
+        [faceDictionary setValue:[NSNumber numberWithBool:!face.rightEyeClosed]
+                          forKey:MUGGER_FACE_RIGHT_EYE_IS_OPEN];
+        eyesCount++;
+        if (!face.rightEyeClosed) openEyesCount++;
+    }
+    
+    if (eyesCount == 0) {
+        eyeScore += SCORE_EYES_MISSING_PENALTY;
+        [eyesScoreDescription setValue:[NSNumber numberWithInteger:SCORE_EYES_MISSING_PENALTY]
+                                forKey:[NSString stringWithFormat:@"Woa, no eyes..."]];
+    } else {
+        eyeScore += SCORE_EYES_BONUS * eyesCount;
+        [eyesScoreDescription setValue:[NSNumber numberWithInteger:SCORE_EYES_BONUS * eyesCount]
+                                 forKey:[NSString stringWithFormat:@"Eyes found"]];
+        
+        if (openEyesCount == 0) {
+            eyeScore += SCORE_EYES_BOTH_CLOSED_PENALTY;
+            [eyesScoreDescription setValue:[NSNumber numberWithInteger:SCORE_EYES_BOTH_CLOSED_PENALTY]
+                                    forKey:[NSString stringWithFormat:@"Eyes closed"]];
+        } else if (openEyesCount == 1) {
+            eyeScore += SCORE_EYES_WINK_BONUS;
+            [eyesScoreDescription setValue:[NSNumber numberWithInteger:SCORE_EYES_WINK_BONUS]
+                                    forKey:[NSString stringWithFormat:@"Wink! ;)"]];
+        } else if (openEyesCount == 2) {
+            eyeScore += SCORE_EYES_BOTH_OPEN_BONUS;
+            [eyesScoreDescription setValue:[NSNumber numberWithInteger:SCORE_EYES_BOTH_OPEN_BONUS]
+                                    forKey:[NSString stringWithFormat:@"Eyes open"]];
+        }
+        
+    }
+    
+    [faceDictionary setValue:[NSNumber numberWithInteger:eyeScore] forKey:MUGGER_FACE_EYES_SCORE];
+    [faceDictionary setValue:eyesScoreDescription forKey:MUGGER_FACE_EYES_SCORE_DESC];
+    
+    return eyeScore;
+}
+
++ (int)scoreMouthAnnotations:(CIFaceFeature *)face andSet:(NSMutableDictionary *)faceDictionary
+{
+    int mouthScore = 0;
+    NSMutableDictionary *mouthScoreDescription = [[NSMutableDictionary alloc] init];
+
+    if (face.hasMouthPosition) {
+        [faceDictionary setValue:[NSNumber numberWithBool:face.hasSmile]
+                          forKey:MUGGER_FACE_MOUTH_IS_SMILING];
+        
+        mouthScore += SCORE_MOUTH_BONUS;
+        [mouthScoreDescription setValue:[NSNumber numberWithInteger:SCORE_MOUTH_BONUS]
+                                 forKey:[NSString stringWithFormat:@"Mouth found"]];
+        
+        if (face.hasSmile) {
+            mouthScore += SCORE_MOUTH_SMILE_BONUS;
+            [mouthScoreDescription setValue:[NSNumber numberWithInteger:SCORE_MOUTH_SMILE_BONUS]
+                                     forKey:[NSString stringWithFormat:@"Smile! :)"]];
+        }
+    } else {
+        mouthScore += SCORE_MOUTH_MISSING_PENALTY;
+        [mouthScoreDescription setValue:[NSNumber numberWithInteger:SCORE_MOUTH_MISSING_PENALTY]
+                                 forKey:[NSString stringWithFormat:@"Missing mouth"]];
+    }
+    
+    [faceDictionary setValue:[NSNumber numberWithInteger:mouthScore] forKey:MUGGER_FACE_MOUTH_SCORE];
+    [faceDictionary setValue:mouthScoreDescription forKey:MUGGER_FACE_MOUTH_SCORE_DESC];
+
+
+    return mouthScore;
+}
+
+
+
+#pragma mark - Colors for annotations
++ (UIColor *)eyeColor
+{
+    return [UIColor yellowColor];
+}
++ (UIColor *)mouthColor
+{
+    return [UIColor greenColor];
+}
++ (UIColor *)faceBoundsColor
+{
+    return [UIColor redColor];
+}
++ (UIColor *)scoreColor:(int)score
+{
+    UIColor *color;
+    
+    if (score < 0) {
+        color = [UIColor redColor];
+    } else if (score < 10) {
+        color = [UIColor orangeColor];
+    } else if (score < 25) {
+        color = [UIColor yellowColor];
+    } else if (score < 40) {
+        color = [UIColor cyanColor];
+    } else if (score < 55) {
+        color = [UIColor blueColor];
+    } else if (score < 70) {
+        color = [UIColor greenColor];
+    } else if (score < 85) {
+        color = [UIColor magentaColor];
+    } else {
+        color = [UIColor purpleColor];
+    }
+    
+    return color;
+}
 @end

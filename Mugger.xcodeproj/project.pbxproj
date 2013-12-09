@@ -10,6 +10,7 @@
 		0280741218455C92006873DD /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0280740E18455C92006873DD /* CoreDataTableViewController.m */; };
 		0280741D18457686006873DD /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0280741B18457686006873DD /* Model.xcdatamodeld */; };
 		02A2DC5E1851F39200AB2EF9 /* ImageAnalysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A2DC5D1851F39200AB2EF9 /* ImageAnalysis.m */; };
+		02A2DC611854C43400AB2EF9 /* ScoreDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A2DC601854C43400AB2EF9 /* ScoreDetailsViewController.m */; };
 		02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */; };
 		02C5D0141846FF3700EB1366 /* User+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D0131846FF3700EB1366 /* User+Create.m */; };
 		02C5D01718471AEA00EB1366 /* MugsCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 02C5D01618471AEA00EB1366 /* MugsCDTVC.m */; };
@@ -53,6 +54,9 @@
 		0280741C18457686006873DD /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		02A2DC5C1851F39200AB2EF9 /* ImageAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAnalysis.h; sourceTree = "<group>"; };
 		02A2DC5D1851F39200AB2EF9 /* ImageAnalysis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAnalysis.m; sourceTree = "<group>"; };
+		02A2DC5F1854C43400AB2EF9 /* ScoreDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreDetailsViewController.h; sourceTree = "<group>"; };
+		02A2DC601854C43400AB2EF9 /* ScoreDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreDetailsViewController.m; sourceTree = "<group>"; };
+		02A2DC621854F76000AB2EF9 /* ScoringConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoringConstants.h; sourceTree = "<group>"; };
 		02C5CFFD1845D58500EB1366 /* UsersCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCDTVC.h; sourceTree = "<group>"; };
 		02C5CFFE1845D58500EB1366 /* UsersCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCDTVC.m; sourceTree = "<group>"; };
 		02C5D0121846FF3700EB1366 /* User+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Create.h"; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 		0280741818455EE4006873DD /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				02A2DC5F1854C43400AB2EF9 /* ScoreDetailsViewController.h */,
+				02A2DC601854C43400AB2EF9 /* ScoreDetailsViewController.m */,
 				02FD47C0184F404C00BDA85A /* ShowMuggerViewController.h */,
 				02FD47C1184F404C00BDA85A /* ShowMuggerViewController.m */,
 				02C5D01518471AEA00EB1366 /* MugsCDTVC.h */,
@@ -205,6 +211,7 @@
 			children = (
 				02A2DC5C1851F39200AB2EF9 /* ImageAnalysis.h */,
 				02A2DC5D1851F39200AB2EF9 /* ImageAnalysis.m */,
+				02A2DC621854F76000AB2EF9 /* ScoringConstants.h */,
 				02FD47C9184F6CB600BDA85A /* UIImage+CS193p */,
 				0280741E1845768D006873DD /* Data Model */,
 				0280741918455F0E006873DD /* View */,
@@ -364,6 +371,7 @@
 				02C5D0141846FF3700EB1366 /* User+Create.m in Sources */,
 				02C5CFFF1845D58500EB1366 /* UsersCDTVC.m in Sources */,
 				02FD47CC184F6CB600BDA85A /* UIImage+CS193p.m in Sources */,
+				02A2DC611854C43400AB2EF9 /* ScoreDetailsViewController.m in Sources */,
 				0280741D18457686006873DD /* Model.xcdatamodeld in Sources */,
 				02D767B6184C32D300912E94 /* ALAssetsLibrary+CustomPhotoAlbum.m in Sources */,
 				02FD47C2184F404C00BDA85A /* ShowMuggerViewController.m in Sources */,

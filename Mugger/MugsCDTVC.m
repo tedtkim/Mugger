@@ -79,8 +79,13 @@
     
     Mug *mug = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    cell.textLabel.text = mug.title;
-    cell.detailTextLabel.text = mug.subtitle;
+    if ([mug.title length]) {
+        cell.textLabel.text = mug.title;
+    } else {
+        cell.textLabel.text = @"Untitled";
+    }
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Mugger score: %@", mug.score];
     if (mug.thumbnailData) {
         cell.imageView.image = [UIImage imageWithData:mug.thumbnailData];
     }
@@ -199,7 +204,7 @@
                                    forUser:self.user
                     inManagedObjectContext:self.user.managedObjectContext];
                 if (self.mug) {
-                    // If not presenting to detail view, we will segue
+                    // If split view, we present mug to detail view - otherwise push segue
                     if (![self presentMugToDetailView:self.mug]) {
                         [self performSegueWithIdentifier:@"Show Mugger From ImagePicker" sender:picker];
                     }
@@ -219,7 +224,6 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    NSLog(@"imagePickerControllerDidCancel called!");
     if (self.popover) {
         [self dismissExistingPopover];
     } else {
@@ -229,7 +233,6 @@
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    NSLog(@"popoverControllerDidDismissPopover called!");
     [self dismissExistingPopover];
 }
 

@@ -7,6 +7,9 @@ Additional comments:
   Note: I modified the completion block signature to contain the NSURL for photo image
   as well.
 
+- I used UITextView Height sizing code referenced from a StackOverflow post:
+  http://stackoverflow.com/questions/19028743/ios7-uitextview-contentsize-height-alternative?rq=1
+
 - In MugsCDTVC.m, using UIActionSheet's showFromBarButtonItem: for iPad was a
   surprisingly difficult task.  Mainly, presenting an action sheet from the master view
   of a split view controller via BarButtonItem would make it slide up from the bottom
@@ -30,3 +33,8 @@ Additional comments:
   possible scaling/transform issues, but with eyes being correct and size of annotated
   image as expected, it appears it's simply CIDetector unable to adjust for edges at
   bottom.  I'd welcome feedback if you know a solution!
+  
+- In ShowMuggerViewController, I learned that shouldPerformSegueWithIdentifier:sender: is
+  not called when doing a manual segue or manual unwind. This was useful as I had to put
+  logic for not repeatedly calling popovers elsewhere.
+  (from https://twitter.com/lucianboboc/statuses/271620542518419456)
