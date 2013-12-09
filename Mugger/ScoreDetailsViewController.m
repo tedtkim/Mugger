@@ -11,7 +11,7 @@
 
 @interface ScoreDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *body;
-
+@property (strong, nonatomic) NSAttributedString *textToDisplay;
 @end
 
 @implementation ScoreDetailsViewController
@@ -22,48 +22,22 @@
     self.body.autoresizingMask = (UIViewAutoresizingFlexibleHeight);
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    //[self updateUI];
-}
-
-- (void)updateUI
-{
-    //[self.body.textStorage setAttributedString:self.strToShow];
-    //CGFloat height = [self textViewHeightForAttributedText:self.body.attributedText andWidth:self.body.frame.size.width];
-    //self.body.frame = CGRectMake(self.body.frame.origin.x, self.body.frame.origin.y, self.body.frame.size.width, height);
-    //NSLog(@"Initial content size: %@", NSStringFromCGSize(self.preferredContentSize));
-    //self.preferredContentSize = CGSizeMake(self.view.frame.size.width, height);
-    //NSLog(@"AFTER setting content size: %@", NSStringFromCGSize(self.preferredContentSize));
-}
-
 // Model is set!
 - (void)setImageInfo:(NSDictionary *)imageInfo
 {
     _imageInfo = imageInfo;
     
-    NSLog(@"setImageInfo");
-    NSAttributedString *value = [self getCombinedScoring];
-    
-    [self.body.textStorage setAttributedString:value];
-
+    if (imageInfo) {
+        self.textToDisplay = [self getCombinedScoring];
+    }
 }
 
-#pragma mark - UITextViewDelegate
-
-/* TODO:
-// to adjust height
-- (void)textViewDidChange:(UITextView *)textView
+- (void)updateUI
 {
-    NSLog(@"textViewDidChange");
-    CGFloat fixedWidth = textView.frame.size.width;
-    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
-    CGRect newFrame = textView.frame;
-    newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
-    textView.frame = newFrame;
+    if (self.textToDisplay) {
+        [self.body.textStorage setAttributedString:self.textToDisplay];
+    }
 }
-*/
 
 #pragma mark - Form attributed string
 
@@ -185,8 +159,9 @@
 }
 
 
-
 #pragma mark - Sizing
+
+// For setting content size of popover in ipad mode
 
 - (CGFloat)textViewHeightWithSetWidth:(CGFloat)width
 {
@@ -196,5 +171,6 @@
     CGSize size = [textView sizeThatFits:CGSizeMake(width, FLT_MAX)];
     return size.height;
 }
+
 
 @end

@@ -2,10 +2,32 @@ user:tedkim (Kim, Tae Dong)
 
 Additional comments:
 
+- Please make sure to play around with the different features.  There are gesture 
+  recognizers in ScoreDetails ShowMuggersViewControllers, and some are different in
+  iPhone vs iPad.  Users and mugs can also be swiped to delete from the table cells.
+
 - I used ALAssetsLibrary+CustomPhotoAlbum category for creating a custom photo album for
   my app.  Link: http://www.touch-code-magazine.com/ios5-saving-photos-in-custom-photo-album-category-for-download/
   Note: I modified the completion block signature to contain the NSURL for photo image
   as well.
+  
+- I am completely using auto layout for both iPhone and iPad, and mugger is a fully
+  universal project.  For UI purposes, it is better geared for the larger iPad screen.
+  To accomodate tight vertical space in landscape iPhone view, I moved the title label
+  to the view controller title itself, and added edit title as a bar button item.
+  
+- There are some subtle UI elements that make the viewing more pleasant.  There is a 
+  bottom UIView that acts as a container for the iPad with a lighter background color,
+  with increasing transparency in landscape mode so that the photo isn't chopped off.
+  
+- I struggled with transforms for a great deal of time on this project - some photos
+  not taken by the native camera get a bit skewed.  I enlisted the help of numerous 
+  sources but was ultimately unsuccessfuly.  UIImagePickerControllerCropRect didn't
+  always cooperate :(.
+  
+- For iPhone, it would help to have activity indicators as toggling between original and
+  auto-enhanced photos take a noticeable amount of time.  I was focusing on my iPad 
+  device, and ran out of time before I realized the sluggishness.
 
 - I used UITextView Height sizing code referenced from a StackOverflow post:
   http://stackoverflow.com/questions/19028743/ios7-uitextview-contentsize-height-alternative?rq=1

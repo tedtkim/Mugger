@@ -12,7 +12,7 @@
 #import "ImageAnalysis.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface ShowMuggerViewController () <UITextFieldDelegate, UISplitViewControllerDelegate>
+@interface ShowMuggerViewController () <UITextFieldDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate>
 
 // UI Controls
 @property (weak, nonatomic) IBOutlet UITextField *mugTitle;
@@ -30,12 +30,11 @@
 // this is weak because we want it to go back to nil
 //   when no one else has strong pointer to the popover (i.e. it is dismissed)
 @property (weak, nonatomic) UIPopoverController *scoreDetailsPopoverController;
+@property (strong, nonatomic) NSNumber *isShowingScoreDetails;  // [NSNumber boolValue]
 
 // iPad UI to allow easier viewing of controls without hiding picture
 @property (weak, nonatomic) IBOutlet UIView *bottomViewForUI;
 
-// TODO @property (nonatomic, weak) UIActionSheet *actionSheetFilter;
-// TODO @property (nonatomic, strong) NSArray *filters; // of CIFilter
 @end
 
 @implementation ShowMuggerViewController
@@ -46,7 +45,7 @@
 {
     [super viewDidLoad];
     [self setup];
-
+    self.isShowingScoreDetails = [NSNumber numberWithBool:NO];
 }
 
 // Initial setup code to initialize delegates and disable controls
@@ -57,7 +56,6 @@
     [self enableUIControls:NO];
     
     // We allow selecting user from master view in portrait mode
-    // TODO: test in iphone
     if (self.splitViewController && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         NSLog(@"We're in IPAD");
         // This performSelector causes memory leak warning, since compiler doesn't know
@@ -86,7 +84,7 @@
                                                     name:UITextFieldTextDidChangeNotification
                                                   object:self.mugTitle];
     [super viewWillDisappear:animated];
-    self.library = nil; // TODO: needs to be singleton?
+    self.library = nil;
 }
 
 // We do this to set semi-transparent background colors for UI controls at top at bottom, in landscape mode of iPad
@@ -107,10 +105,6 @@
             } completion:NULL];
         }
     }
-}
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-
 }
 
 // Here's where we'll update title - it might seem a lot, but it's just a title
@@ -148,10 +142,6 @@
 {
     _mug = mug;
     
-    // TODO: not needed!
-    // Must dismiss popover if master changes mug
-    //[self.scoreDetailsPopoverController dismissPopoverAnimated:YES];
-    
     if (mug) {
         self.view.hidden = NO;
         [self enableUIControls:YES];
@@ -167,21 +157,11 @@
     }
 }
 
-
-/* TODO: if using filters later
-- (void)setFilters:(NSArray *)filters
-{
-    _filters = filters;
-    self.filtersButton.enabled = filters ? [filters count] : NO;
-}
- */
-
 #pragma mark - Getting Mug
 
 - (void)getMug
 {
     // A bit ungainly, but necessary to grab image from AssetURL
-    // TODO: asynchronous - perhaps add activity indicators
     [self.library assetForURL:[NSURL URLWithString:self.mug.mugURL]
                   resultBlock:^(ALAsset *asset) {
                       ALAssetRepresentation *rep = [asset defaultRepresentation];
@@ -224,15 +204,22 @@
     if (!self.mug.thumbnailData && thumbnail) {
         self.mug.thumbnailData = UIImageJPEGRepresentation(thumbnail, 1.0);
     }
-    // Display title & score
+    // Display title & score - self.mugTitle label doesn't exist in iPhone due to space considerations
+    NSString *title = @"";
     if (self.mug.title) {
-        self.mugTitle.text = self.mug.title;
+        title = self.mug.title;
+    }
+    if (self.mugTitle) {
+        self.mugTitle.text = title;
+    } else {
+        self.title = title;
     }
 
     self.imageInfo = [ImageAnalysis analyzeImage:image];
     
     
     NSNumber *score = [self.imageInfo valueForKey:MUGGER_SCORE_TOTAL];
+    self.mug.score = score;
     UIColor *scoreColor = [ImageAnalysis scoreColor:[score intValue]];
     
     NSDictionary *attrForCombined = @{ NSForegroundColorAttributeName : scoreColor,
@@ -245,25 +232,28 @@
     self.view.backgroundColor = [scoreColor colorWithAlphaComponent:0.5f];
 }
 
-/* TODO
-- (void)calculateScore:(UIImage *)image
-{
-    self.filters = [ImageAnalysis analyzeImage:image];
-    
-    CIImage* ciImage = [[CIImage alloc] initWithCGImage:image.CGImage];
-    for (CIFilter *filter in self.filters) {
-        [filter setValue:ciImage forKey:kCIInputImageKey];
-        //ciImage = filter.outputImage;
-    }
-    // TODO: Perhaps launch in asynchronous thread
-}
-*/
-
-
-// TODO: may not be necessary
 #pragma mark - Edit Title
+
+// Using alert view to edit title in iPhone
 - (IBAction)editTitle:(UIBarButtonItem *)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Title" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *textField = [alert textFieldAtIndex:0];
+    textField.placeholder = @"Enter title";
+    textField.text = self.title;
+    [alert show];
 }
+
+// Save a new user
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Save"]) {
+        NSString *inputText = [[alertView textFieldAtIndex:0] text];
+        self.mug.title = inputText;
+        self.title = inputText;
+    }
+}
+
 
 // Switch to toggle annotations
 - (IBAction)toggleAnnotationSwitch:(UISwitch *)sender {
@@ -314,13 +304,27 @@
 // If user long presses on image while annotations are on, let's
 // show them some details about the score!
 - (IBAction)longPress:(UILongPressGestureRecognizer *)sender {
+    NSLog(@"Long pressed");
     if (self.annotationToggle.on && !self.scoreDetailsPopoverController) {
+        if (![self isIpad] && [self.isShowingScoreDetails boolValue]) return;
+        
         if (self.imageInfo) {
+            self.isShowingScoreDetails = [NSNumber numberWithBool:YES];
+            NSLog(@"perform Segue!");
             [self performSegueWithIdentifier:@"Show Score Details" sender:self];
         }
     }
 }
 
+// this is called when ScoreDetailsViewController (modal) unwinds back to us
+- (IBAction)doneWithScoreDetails:(UIStoryboardSegue *)segue
+{
+    if ([segue.sourceViewController isKindOfClass:[ScoreDetailsViewController class]]) {
+        ScoreDetailsViewController *sdvc = (ScoreDetailsViewController *)segue.sourceViewController;
+        sdvc.imageInfo = nil;
+        self.isShowingScoreDetails = [NSNumber numberWithBool:NO];
+    }
+}
 
 #pragma mark - Helper Methods
 
@@ -337,49 +341,6 @@
     return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
-/* TODO: if using filters later
-#pragma mark - Filter image, with UIActionSheetDelegate
-
-// Using UIActionSheet
-- (IBAction)filterImage:(UIButton *)sender {
-    // TODO: First, dismiss action sheet it exists already
-    //[self dismissExistingActionSheet];
- 
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select Filter"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:nil];
-    
-    for (CIFilter *filter in self.filters) {
-        [actionSheet addButtonWithTitle:filter.name];
-    }
-    
-    [actionSheet addButtonWithTitle:@"Cancel"];
-    actionSheet.cancelButtonIndex = [self.filters count];
-    
-    if ([self isIpad]) {
-        [actionSheet showFromRect:self.filtersButton.frame inView:self.view animated:YES];
-    } else {
-        [actionSheet showInView:self.view];
-    }
-    self.actionSheetFilter = actionSheet;
- 
-}
-
-// Present image picker
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *choice = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if (![choice isEqualToString:@"Cancel"]) {
-        for (CIFilter *filter in self.filters) {
-            if ([choice isEqualToString:filter.name]) {
-                self.imageView.image = [[UIImage alloc] initWithCIImage:filter.outputImage];
-            }
-        }
-    }
-}
-*/
 
 #pragma mark - Score Details
 #define SCORE_DETAILS_POPOVER_WIDTH 300.0
@@ -396,14 +357,14 @@
         }
         
         scoreDetailsvc.imageInfo = self.imageInfo;
+        scoreDetailsvc.view.autoresizingMask = (UIViewAutoresizingFlexibleHeight);
 
         // Let's do one more step on popover to size the height properly
         if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
-            scoreDetailsvc.view.autoresizingMask = (UIViewAutoresizingFlexibleHeight);
+            [scoreDetailsvc updateUI];
             CGFloat width = SCORE_DETAILS_POPOVER_WIDTH;
             CGSize size = CGSizeMake(width, [scoreDetailsvc textViewHeightWithSetWidth:width]);
             [self.scoreDetailsPopoverController setPopoverContentSize:size];
-            NSLog(@"setting popover content size:%@", NSStringFromCGSize(size));
         }
     }
 }
@@ -453,6 +414,7 @@
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)pc
 {
+    NSLog(@"willHideViewController: Trying to set bar button title to: %@", aViewController.title);
     barButtonItem.title = aViewController.title;
     self.navigationItem.leftBarButtonItem = barButtonItem;
 }
@@ -461,6 +423,7 @@
      willShowViewController:(UIViewController *)aViewController
   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
+    NSLog(@"willShowViewController: No longer needed bar button item: %@", self.navigationItem.leftBarButtonItem.title);
     self.navigationItem.leftBarButtonItem = nil;
 }
 

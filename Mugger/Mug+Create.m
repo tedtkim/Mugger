@@ -34,17 +34,4 @@
     return mug;
 }
 
-+ (NSString *)uniqueFileNameWithTitle:(NSString *)title withExtension:(NSString *)extension
-{
-    // Extenstion string is like @".png"
-    
-    NSDate *time = [NSDate date];
-    NSDateFormatter* df = [NSDateFormatter new];
-    [df setDateFormat:@"dd-MM-yyyy-hh-mm-ss"];
-    NSString *timeString = [df stringFromDate:time];
-    NSString *fileName = [NSString stringWithFormat:@"%@-%@%@", title, timeString, extension];
-    
-    return fileName;
-}
-
 @end

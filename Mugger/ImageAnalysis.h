@@ -18,7 +18,6 @@
 
 // keys to values in a face annotation dictionary
 // note: if key doesn't exist for eye/mouth, then they weren't found in photo
-#define MUGGER_FACE_BOUNDS @"bounds"                    // [NSValue CGRectValue] TODO: needed?
 #define MUGGER_FACE_LEFT_EYE_IS_OPEN @"isLeftEyeOpen"   // [NSNumber boolValue]
 #define MUGGER_FACE_RIGHT_EYE_IS_OPEN @"isRightEyeOpen" // [NSNumber boolValue]
 #define MUGGER_FACE_MOUTH_IS_SMILING @"isMouthSmiling"  // [NSNumber boolValue]

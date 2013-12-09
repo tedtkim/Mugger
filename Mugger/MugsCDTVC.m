@@ -11,6 +11,7 @@
 #import "ShowMuggerViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>   // kUTTypeImage
 #import "ALAssetsLibrary+CustomPhotoAlbum.h"
+#import "ImageAnalysis.h"
 
 @interface MugsCDTVC () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, strong) NSDictionary *mugFetchers;
@@ -33,7 +34,7 @@
     [self dismissExistingActionSheet];
     [self dismissExistingPopover];
     self.mug = nil;
-    self.library = nil; // TODO: needs to be singleton?
+    self.library = nil;
 }
 
 #pragma mark - Properties
@@ -55,11 +56,6 @@
                 NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType.intValue];
                 if ([availableMediaTypes containsObject:(NSString *)kUTTypeImage]) {
                     [_mugFetchers setValue:sourceType forKey:fetcher];
-                    /* Give choice for front/back as available?
-                     if ([UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront]) {
-                     
-                     }
-                     */
                 }
             }
         }
@@ -209,7 +205,6 @@
                         [self performSegueWithIdentifier:@"Show Mugger From ImagePicker" sender:picker];
                     }
                 }
-                // TODO: can add activity indicator if takes too long
             } else {
                 NSLog(@"[%@ %@] Error: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error description]);
                 return;

@@ -421,8 +421,6 @@
     return mouthScore;
 }
 
-
-
 #pragma mark - Colors for annotations
 + (UIColor *)eyeColor
 {

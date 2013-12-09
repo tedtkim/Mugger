@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSDictionary *imageInfo;  // From ImageAnalysis
 
 - (CGFloat)textViewHeightWithSetWidth:(CGFloat)width;
+- (void)updateUI;
 
 @end

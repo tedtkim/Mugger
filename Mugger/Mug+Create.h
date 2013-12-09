@@ -12,6 +12,4 @@
 
 + (Mug *)mugWithURL:(NSURL *)mugURL forUser:(User *)user inManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (NSString *)uniqueFileNameWithTitle:(NSString *)title withExtension:(NSString *)extension;
-
 @end

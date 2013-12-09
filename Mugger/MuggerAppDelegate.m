@@ -73,29 +73,6 @@
 {
     _muggerDatabaseContext = muggerDatabaseContext;
     
-    /* TODO: Instead of this, use corresponding User model
-     // make sure "the user" Photographer exists at all times
-     if (muggerDatabaseContext) [Photographer userInManagedObjectContext:photoDatabaseContext];
-     */
-    
-    /* TODO: Legacy code
-     // every time the context changes, we'll restart our timer
-     // so kill (invalidate) the current one
-     // (we didn't get to this line of code in lecture, sorry!)
-     [self.flickrForegroundFetchTimer invalidate];
-     self.flickrForegroundFetchTimer = nil;
-     
-     if (self.muggerDatabaseContext)
-     {
-     // this timer will fire only when we are in the foreground
-     self.flickrForegroundFetchTimer = [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
-     target:self
-     selector:@selector(startFlickrFetch:)
-     userInfo:nil
-     repeats:YES];
-     }
-     */
-    
     // let everyone who might be interested know this context is available
     NSDictionary *userInfo = self.muggerDatabaseContext ? @{ MuggerDatabaseNamesContext : self.muggerDatabaseContext } : nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:MuggerDatabaseNamesNotification
